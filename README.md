@@ -11,7 +11,7 @@
    * Configure access and network groups.
    * Create 2 EC2 instances(use t3.micro types).
    * Provision 1st EC2 instance install MySQL and install all dependencies. (Or create [AMI](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AMIs.html) based on that ec2 instance, and use it as image.)
-   * Istall all dependencies on 2nd EC2 instance. (Or create AMI based on that ec2 instance, and use it as image.)
+   * Install all dependencies on 2nd EC2 instance. (Or create AMI based on that ec2 instance, and use it as image.)
    * Deploy jar application and run it on 2nd instance.
 
 - Subtask II  - Gitlab
