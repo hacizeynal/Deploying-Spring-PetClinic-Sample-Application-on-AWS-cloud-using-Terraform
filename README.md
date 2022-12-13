@@ -21,9 +21,9 @@
     * Create a step to check if the application is up and running(health check).
                          
 
-- Additional tasks
+<!-- - Additional tasks
     * Create the same application infrastructure using GCP cloud provider.
     * Use docker images and deploy them to EC2 instances instead of bare instances.
     * Use MySQL database in AWS RDS instead ec2 instance.
-    
+     -->
     
