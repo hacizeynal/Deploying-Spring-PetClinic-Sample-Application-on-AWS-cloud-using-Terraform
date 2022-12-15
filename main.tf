@@ -83,12 +83,27 @@ resource "aws_security_group" "petclinic_sg" {
    }
 }
 
-data "aws_ami" "latest-amazon-linux-image" {
+data "aws_ami" "ubuntu18" {
+    most_recent = true
+    owners = ["amazon"]
+
+    filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
+    }
+
+    filter {
+        name = "virtualization-type"
+        values = ["hvm"]
+    }
+}
+
+data "aws_ami" "ubuntu22" {
     most_recent = true
     owners = ["amazon"]
     filter {
         name = "name"
-        values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+        values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
     }
     filter {
         name = "virtualization-type"
@@ -96,13 +111,14 @@ data "aws_ami" "latest-amazon-linux-image" {
     }
 }
 
+
 # resource "aws_key_pair" "ssh_key" {
 #   key_name = "AWS_KEY_PAIR"
 #   public_key = file(var.my_public_key_location)
 # }
 
 resource "aws_instance" "petclinic_mysql" {
-  ami = data.aws_ami.latest-amazon-linux-image.id
+  ami = data.aws_ami.ubuntu18.id
   instance_type = var.instance_type
   availability_zone = var.availibility_zone
 
@@ -110,7 +126,6 @@ resource "aws_instance" "petclinic_mysql" {
   vpc_security_group_ids = [aws_security_group.petclinic_sg.id]
 
   associate_public_ip_address = true
-  # key_name = aws_key_pair.ssh_key.key_name
   key_name = "AWS_KEY_PAIR"
   tags = {
     "Name" = "${var.env_prefix}-db"
@@ -118,7 +133,7 @@ resource "aws_instance" "petclinic_mysql" {
 }
 
 resource "aws_instance" "petclinic_application" {
-  ami = data.aws_ami.latest-amazon-linux-image.id
+  ami = data.aws_ami.ubuntu22.id
   instance_type = var.instance_type
   availability_zone = var.availibility_zone
 
@@ -126,7 +141,6 @@ resource "aws_instance" "petclinic_application" {
   vpc_security_group_ids = [aws_security_group.petclinic_sg.id]
 
   associate_public_ip_address = true
-  # key_name = aws_key_pair.ssh_key.key_name
   key_name = "AWS_KEY_PAIR"
 
   tags = {
