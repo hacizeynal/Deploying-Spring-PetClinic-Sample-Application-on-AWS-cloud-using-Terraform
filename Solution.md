@@ -1,3 +1,6 @@
+
+# Solution for Subtask I 
+
 We will deploy Spring PetClinic  Application on AWS cloud using Terraform in this project. We will create following AWS resources via Terraform
 
     * AWS VPC
@@ -587,6 +590,7 @@ Cloud-init v. 22.4.2-0ubuntu0~22.04.1 finished at Fri, 16 Dec 2022 19:57:47 +000
 
 ```
 
+# Solution for Subtask II
 
 
 
