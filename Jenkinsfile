@@ -1,29 +1,56 @@
 pipeline {
-  agent any
-  options {
-    skipDefaultCheckout(true)
-  }
-  stages{
-    stage('clean workspace') {
-      steps {
-        cleanWs()
+agent any
+tools {
+  terraform 'terraform'
+}
+options { ansiColor('xterm') } 
+ stages { 
+   stage ('Checkout Repo') { 
+     steps { 
+       cleanWs()
+       sh  'git clone https://github.com/UnixArena/terraform-test.git'
       }
+      } 
+
+stage ('Terraform version') { 
+  steps {
+   sh '''
+    terraform --version
+   ''' 
     }
-    stage('checkout') {
-      steps {
-        checkout scm
-      }
     }
-    stage('terraform') {
-      steps {
-        sh 'chmod +x .'
-        sh './terraformw apply -auto-approve -no-color'
-      }
-    }
-  }
-  post {
-    always {
-      cleanWs()
-    }
+    
+  stage ('Terraform init') { 
+  steps {
+   sh '''
+   cd terraform-test/
+   terraform init
+   ''' 
+   }
+   }
+   
+  stage ('Terraform plan') { 
+  steps {
+   sh '''
+   cd terraform-test/
+   terraform plan -out=tfplan.out
+   terraform show -json tfplan.out
+   ''' 
+   }
+   }
+   
+ stage ('Terraform apply') { 
+  steps {
+   sh '''
+   cd terraform-test/
+   terraform apply --auto-approve
+   ''' 
+   }
+        post { 
+        always { 
+            cleanWs()
+         }
+        }
+       }
   }
 }
