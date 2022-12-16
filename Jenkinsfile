@@ -33,7 +33,7 @@ tools {
   steps {
    sh '''
    cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
-   terraform apply --auto-approve
+   terraform destroy --auto-approve
    ''' 
    }
         post { 
