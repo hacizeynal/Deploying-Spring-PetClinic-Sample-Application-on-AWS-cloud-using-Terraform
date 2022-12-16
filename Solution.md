@@ -1,3 +1,4 @@
+[![Screenshot-2022-12-16-at-21-46-06.png](https://i.postimg.cc/SQ78s3Jm/Screenshot-2022-12-16-at-21-46-06.png)](https://postimg.cc/nMrMSd4W)
 
 # Solution for Subtask I 
 
@@ -591,8 +592,6 @@ Cloud-init v. 22.4.2-0ubuntu0~22.04.1 finished at Fri, 16 Dec 2022 19:57:47 +000
 ```
 
 # Solution for Subtask II
-
-[![Screenshot-2022-12-16-at-21-46-06.png](https://i.postimg.cc/SQ78s3Jm/Screenshot-2022-12-16-at-21-46-06.png)](https://postimg.cc/nMrMSd4W)
 
 In the second task ,we will build our infrastructure automatically via Jenkins ,Terraform will be used as IAC tool like first task.
 
