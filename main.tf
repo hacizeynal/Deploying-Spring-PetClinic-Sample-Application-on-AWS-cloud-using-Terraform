@@ -71,6 +71,22 @@ resource "aws_security_group" "petclinic_sg" {
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
+    ingress {
+    description      = "MYSQL port"
+    from_port        = 3306
+    to_port          = 3306
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+    ingress {
+    description      = "ICMP"
+    from_port = 8
+    to_port = 0
+    protocol = "icmp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+
   egress {
     from_port        = 0
     to_port          = 0
@@ -141,6 +157,7 @@ resource "aws_instance" "petclinic_application" {
   tags = {
     "Name" = "${var.env_prefix}-app"
   }
+  user_data = file("application.sh") # execute user-data script which will install dependencies for APP
 }
 
 
@@ -150,4 +167,12 @@ output "ec2_public_ip_1" {
 
 output "ec2_public_ip_2" {
     value = aws_instance.petclinic_application.public_ip
+}
+
+output "ec2_internal_ip_mysql" {
+    value = aws_instance.petclinic_mysql.private_ip
+}
+
+output "ec2_internal_ip_app" {
+    value = aws_instance.petclinic_application.private_dns
 }
