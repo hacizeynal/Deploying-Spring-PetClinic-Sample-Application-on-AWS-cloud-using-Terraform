@@ -31,8 +31,7 @@ stage ('Terraform version') {
   stage ('Terraform plan') { 
   steps {
    sh '''
-   terraform plan -out=tfplan.out
-   terraform show -json tfplan.out
+   terraform plan
    ''' 
    }
    }
