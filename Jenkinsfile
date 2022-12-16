@@ -7,7 +7,7 @@ tools {
    stage ('Checkout Repo') { 
      steps { 
        cleanWs()
-       sh  'git clone https://github.com/UnixArena/terraform-test.git'
+       sh  'git clone https://github.com/hacizeynal/Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform.git'
       }
       } 
 
