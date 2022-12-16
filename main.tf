@@ -111,12 +111,6 @@ data "aws_ami" "ubuntu22" {
     }
 }
 
-
-# resource "aws_key_pair" "ssh_key" {
-#   key_name = "AWS_KEY_PAIR"
-#   public_key = file(var.my_public_key_location)
-# }
-
 resource "aws_instance" "petclinic_mysql" {
   ami = data.aws_ami.ubuntu18.id
   instance_type = var.instance_type
@@ -130,6 +124,7 @@ resource "aws_instance" "petclinic_mysql" {
   tags = {
     "Name" = "${var.env_prefix}-db"
   }
+  user_data = file("mysql.sh") # execute user-data script which will install dependencies for MySQL DB
 }
 
 resource "aws_instance" "petclinic_application" {
