@@ -3,10 +3,8 @@ sudo hostname MYSQL
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt-get install mysql-server -y
-# sudo sh -c "echo 'export DATABASE_PASS=1234' >> /etc/profile"
 sudo sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mysql/mysql.conf.d/mysqld.cnf
 sudo service mysql restart
-# source /etc/profile
 
 cat <<EOF >> user.sql
 CREATE USER 'petclinic'@'%' IDENTIFIED BY 'petclinic';
