@@ -3,8 +3,10 @@ sudo hostname MYSQL
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt-get install mysql-server -y
-sudo sh -c "echo 'export DATABASE_PASS=1234' >> /etc/profile"
-source /etc/profile
+# sudo sh -c "echo 'export DATABASE_PASS=1234' >> /etc/profile"
+sudo sed -i "s/127.0.0.1/0.0.0.0/g" /etc/mysql/mysql.conf.d/mysqld.cnf
+sudo service mysql restart
+# source /etc/profile
 
 cat <<EOF >> user.sql
 CREATE USER 'petclinic'@'%' IDENTIFIED BY 'petclinic';
@@ -130,4 +132,5 @@ INSERT IGNORE INTO visits VALUES (4, 7, '2008-09-04', 'spayed');
 
 EOF
 
-mysql -u root -p"$DATABASE_PASS" < user.sql
+# mysql -u root -p"$DATABASE_PASS" < user.sql
+sudo mysql < user.sql

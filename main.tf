@@ -78,15 +78,7 @@ resource "aws_security_group" "petclinic_sg" {
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
   }
-    ingress {
-    description      = "ICMP"
-    from_port = 8
-    to_port = 0
-    protocol = "icmp"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
-
-
+  
   egress {
     from_port        = 0
     to_port          = 0
@@ -98,7 +90,6 @@ resource "aws_security_group" "petclinic_sg" {
      "Name" = "${var.env_prefix}-sg"
    }
 }
-
 data "aws_ami" "ubuntu18" {
     most_recent = true
     owners = ["amazon"]
@@ -131,8 +122,8 @@ resource "aws_instance" "petclinic_mysql" {
   ami = data.aws_ami.ubuntu18.id
   instance_type = var.instance_type
   availability_zone = var.availibility_zone
-
-  subnet_id =aws_subnet.my_app_subnet-1.id 
+  subnet_id =aws_subnet.my_app_subnet-1.id
+  private_ip = "10.20.15.200"
   vpc_security_group_ids = [aws_security_group.petclinic_sg.id]
 
   associate_public_ip_address = true
@@ -142,6 +133,10 @@ resource "aws_instance" "petclinic_mysql" {
   }
   user_data = file("mysql.sh") # execute user-data script which will install dependencies for MySQL DB
 }
+
+# output "ec2_internal_ip_mysql" {
+#     value = aws_instance.petclinic_mysql.private_ip
+# }
 
 resource "aws_instance" "petclinic_application" {
   ami = data.aws_ami.ubuntu22.id
@@ -158,21 +153,5 @@ resource "aws_instance" "petclinic_application" {
     "Name" = "${var.env_prefix}-app"
   }
   user_data = file("application.sh") # execute user-data script which will install dependencies for APP
-}
 
-
-output "ec2_public_ip_1" {
-    value = aws_instance.petclinic_mysql.public_ip
-}
-
-output "ec2_public_ip_2" {
-    value = aws_instance.petclinic_application.public_ip
-}
-
-output "ec2_internal_ip_mysql" {
-    value = aws_instance.petclinic_mysql.private_ip
-}
-
-output "ec2_internal_ip_app" {
-    value = aws_instance.petclinic_application.private_dns
 }
