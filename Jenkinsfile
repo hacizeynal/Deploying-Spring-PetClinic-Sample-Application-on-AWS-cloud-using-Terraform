@@ -4,21 +4,13 @@ tools {
   terraform 'terraform'
 }
  stages { 
-   stage ('Checkout Repo') { 
+   stage ('Checkout Git Repo') { 
      steps { 
        cleanWs()
        sh  'git clone https://github.com/hacizeynal/Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform.git'
       }
       } 
-
-stage ('Terraform version') { 
-  steps {
-   sh '''
-    terraform --version
-   ''' 
-    }
-    }
-    
+  
   stage ('Terraform init') { 
   steps {
    sh '''
@@ -40,7 +32,7 @@ stage ('Terraform version') {
  stage ('Terraform apply') { 
   steps {
    sh '''
-   cd terraform-test/
+   cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
    terraform apply --auto-approve
    ''' 
    }
