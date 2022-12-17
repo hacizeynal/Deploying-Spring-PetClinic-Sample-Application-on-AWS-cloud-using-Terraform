@@ -1,7 +1,16 @@
+terraform {
+  backend "s3" {
+    bucket = "terraform-state-zhajili"
+    key    = "terraform-state/"
+    region = "us-east-1"
+  }
+}
+
 provider "aws" {
   # No need to add since we have added all configuration including region,access_key and secret_access_key via aws configure list command 
   # it is located at ~/.aws/credentials
 }
+
 
 variable "vpc_cidr_block" {}
 variable "subnet_cidr_block" {}
