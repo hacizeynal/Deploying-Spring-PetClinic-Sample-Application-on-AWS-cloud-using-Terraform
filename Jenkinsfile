@@ -43,8 +43,7 @@ environment {
    }
   stage ('Check healh status') {
     environment{
-      env.PUBLIC_DYNAMIC_URL = '$(terraform output -raw application_public_public_dns)'
-  
+      env.PUBLIC_DYNAMIC_URL = "k"
     } 
     steps {
         echo "URL is ${env.PUBLIC_DYNAMIC_URL}" 
