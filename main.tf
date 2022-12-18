@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "terraform-state-zhajili"
-    key    = "terraform-state/"
+    key    = "terraform-state/petclinic/terraform.tfstate"
     region = "us-east-1"
   }
 }
@@ -143,9 +143,6 @@ resource "aws_instance" "petclinic_mysql" {
   user_data = file("mysql.sh") # execute user-data script which will install dependencies for MySQL DB
 }
 
-# output "ec2_internal_ip_mysql" {
-#     value = aws_instance.petclinic_mysql.private_ip
-# }
 
 resource "aws_instance" "petclinic_application" {
   ami = data.aws_ami.ubuntu22.id
@@ -164,3 +161,11 @@ resource "aws_instance" "petclinic_application" {
   user_data = file("application.sh") # execute user-data script which will install dependencies for APP
 
 }
+
+output "application_public_public_dns" {
+    value = aws_instance.petclinic_application.public_dns
+}
+
+# output "application_public_public_dns" {
+#     value = module.petclinic_application.public_dns
+# }

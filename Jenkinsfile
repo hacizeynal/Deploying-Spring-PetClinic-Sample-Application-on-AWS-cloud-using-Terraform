@@ -37,7 +37,7 @@ tools {
     ''' 
     }
    }
-  stage ('Check healh check') { 
+  stage ('Check healh status') { 
     steps {
       sh '''
       cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
