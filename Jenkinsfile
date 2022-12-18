@@ -4,7 +4,7 @@ tools {
   terraform 'terraform'
 }
  stages { 
-   stage ('Checkout Git Repo') { 
+  stage ('Checkout Git Repo') { 
      steps { 
        cleanWs()
        sh  'git clone https://github.com/hacizeynal/Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform.git'
@@ -12,43 +12,44 @@ tools {
       } 
   
   stage ('Terraform init') { 
-  steps {
-   sh '''
-   cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
-   terraform init
-   ''' 
-   }
+    steps {
+    sh '''
+    cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
+    terraform init
+    ''' 
+    }
    }
    
   stage ('Terraform plan') { 
-  steps {
-   sh '''
-   cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
-   terraform plan
-   ''' 
-   }
-   }
+    steps {
+    sh '''
+    cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
+    terraform plan
+    ''' 
+    }
+    }
    
- stage ('Terraform apply/destroy') { 
-  steps {
-   sh '''
-   cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
-   terraform destroy --auto-approve
-   ''' 
+  stage ('Terraform apply/destroy') { 
+    steps {
+    sh '''
+    cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
+    terraform apply --auto-approve
+    ''' 
+    }
    }
-
-  steps {
-   sh '''
-   export PUBLIC_DYNAMIC_URL=$(terraform output -raw application_public_public_dns)
-   source ~/.bashprofile
-   ''' 
-   }
-
-        post { 
-        always { 
-            cleanWs()
-         }
-        }
-       }
+  stage ('Check healh check') { 
+    steps {
+      sh '''
+      export PUBLIC_DYNAMIC_URL=$(terraform output -raw application_public_public_dns)
+      source ~/.bashprofile
+      ''' 
+      }
+  }
+  post { 
+  always { 
+      cleanWs()
+    }
+  }
+  }
   }
 }
