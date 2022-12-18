@@ -3,6 +3,10 @@ agent any
 tools {
   terraform 'terraform'
 }
+environment {
+    PUBLIC_DYNAMIC_URL = '$(terraform output -raw application_public_public_dns)'
+}
+
  stages { 
   stage ('Checkout Git Repo') { 
      steps { 
@@ -39,12 +43,11 @@ tools {
    }
   stage ('Check healh status') { 
     steps {
-      sh '''
-      cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
-      terraform refresh
-      export PUBLIC_DYNAMIC_URL=$(terraform output -raw application_public_public_dns)
-      source ~/.bashprofile
-      ''' 
+      script {
+          withEnv(["PUBLIC_DYNAMIC_URL = '$(terraform output -raw application_public_public_dns)'"]) {
+            echo "${env.PUBLIC_DYNAMIC_URL}"
+          }
+        }
       }
     }
   }
