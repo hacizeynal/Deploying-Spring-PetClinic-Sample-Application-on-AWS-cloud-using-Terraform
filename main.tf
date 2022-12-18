@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "terraform-state-zhajili"
-    key    = "terraform-state/petclinic/terraform.tfstate"
+    key    = "petclinic/terraform.tfstate"
     region = "us-east-1"
   }
 }
