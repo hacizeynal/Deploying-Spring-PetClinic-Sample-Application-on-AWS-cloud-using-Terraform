@@ -43,9 +43,7 @@ tools {
       PUBLIC_DYNAMIC_URL = "${sh(script:'terraform output -raw application_public_public_dns', returnStdout: true).trim()}"
     } 
     steps {
-    sh '''
-    cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
-    '''
+     echo "url is ${env.PUBLIC_DYNAMIC_URL}"
         }
       }
     }
