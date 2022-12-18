@@ -29,13 +29,21 @@ tools {
    }
    }
    
- stage ('Terraform apply') { 
+ stage ('Terraform apply/destroy') { 
   steps {
    sh '''
    cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
    terraform destroy --auto-approve
    ''' 
    }
+
+  steps {
+   sh '''
+   export PUBLIC_DYNAMIC_URL=$(terraform output -raw application_public_public_dns)
+   source ~/.bashprofile
+   ''' 
+   }
+
         post { 
         always { 
             cleanWs()
