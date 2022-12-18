@@ -40,6 +40,7 @@ tools {
   stage ('Check healh check') { 
     steps {
       sh '''
+      cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
       export PUBLIC_DYNAMIC_URL=$(terraform output -raw application_public_public_dns)
       source ~/.bashprofile
       ''' 
