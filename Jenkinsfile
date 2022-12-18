@@ -44,7 +44,7 @@ environment {
   stage ('Check healh status') { 
     steps {
       script {
-          withEnv(["PUBLIC_DYNAMIC_URL = '$(terraform output -raw application_public_public_dns)'"]) {
+          withEnv("PUBLIC_DYNAMIC_URL = '$(terraform output -raw application_public_public_dns)'") {
             echo "${env.PUBLIC_DYNAMIC_URL}"
           }
         }
