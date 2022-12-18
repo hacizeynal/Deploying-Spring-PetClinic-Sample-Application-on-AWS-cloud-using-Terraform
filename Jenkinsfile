@@ -39,12 +39,15 @@ tools {
     }
    }
   stage ('Check healh status') {
+    
+    steps {
+    sh '''
+    cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
+    '''
+        }
     environment {
       PUBLIC_DYNAMIC_URL = "${sh(script:'terraform output -raw application_public_public_dns', returnStdout: true).trim()}"
-    }   
-    steps {
-        echo "URL is ${env.PUBLIC_DYNAMIC_URL}" 
-        }
+    } 
       }
     }
   }
