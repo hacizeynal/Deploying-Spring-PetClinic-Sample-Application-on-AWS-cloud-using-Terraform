@@ -43,7 +43,7 @@ tools {
       PUBLIC_DYNAMIC_URL = "${sh(script:'cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/ && terraform output -raw application_public_public_dns', returnStdout: true).trim()}"
     } 
     steps {
-     echo "url is ${env.PUBLIC_DYNAMIC_URL}"
+      sh "curl -X ${env.PUBLIC_DYNAMIC_URL}:8080/actuator/health/custom"
         }
       }
     }
