@@ -44,11 +44,6 @@ tools {
       source ~/.bashprofile
       ''' 
       }
-  }
-  post { 
-  always { 
-      cleanWs()
     }
   }
-  }
-  }
+}
