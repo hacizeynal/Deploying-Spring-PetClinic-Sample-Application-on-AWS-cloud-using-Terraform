@@ -44,6 +44,7 @@ tools {
     } 
     steps {
       sh "curl -X GET http://${env.PUBLIC_DYNAMIC_URL}:8080/actuator/health/custom"
+      echo "Application is running successfully !"
         }
       }
     }
