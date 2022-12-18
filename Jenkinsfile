@@ -3,9 +3,6 @@ agent any
 tools {
   terraform 'terraform'
 }
-environment {
-    PUBLIC_DYNAMIC_URL = ''
-}
 
  stages { 
   stage ('Checkout Git Repo') { 
@@ -42,9 +39,9 @@ environment {
     }
    }
   stage ('Check healh status') {
-    environment{
-      env.PUBLIC_DYNAMIC_URL = "k"
-    } 
+    environment {
+      PUBLIC_DYNAMIC_URL = "${sh(script:'ls -la', returnStdout: true).trim()}"
+    }   
     steps {
         echo "URL is ${env.PUBLIC_DYNAMIC_URL}" 
         }
