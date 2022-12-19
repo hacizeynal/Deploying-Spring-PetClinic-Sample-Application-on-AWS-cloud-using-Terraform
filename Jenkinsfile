@@ -68,7 +68,7 @@ tools {
         slackSend channel: '#jenkins',
             color: COLOR_MAP[currentBuild.currentResult],
             message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
-            message: "Application is running on ${env.PUBLIC_DYNAMIC_URL}"
+            // message: "Application is running on ${env.PUBLIC_DYNAMIC_URL}"
                 }
             }  
   }
