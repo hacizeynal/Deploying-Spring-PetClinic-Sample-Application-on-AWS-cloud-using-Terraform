@@ -179,33 +179,29 @@ resource "aws_instance" "petclinic_application" {
     "Name" = "${var.env_prefix}-app"
   }
 
-  connection {
-    type     = "ssh"
-    user     = "ubuntu"
-    host     = self.public_dns
-    private_key = file("~/.ssh/AWS_KEY_PAIR.pem")
-  }
+  # connection {
+  #   type     = "ssh"
+  #   user     = "ubuntu"
+  #   host     = self.public_dns
+  #   private_key = file("~/.ssh/AWS_KEY_PAIR.pem")
+  # }
 
-  provisioner "file" {
-    source      = "application.sh"
-    destination = "/tmp/script.sh"
-  }
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /tmp/script.sh",
-      "/tmp/script.sh args",
-      "sudo cloud-init status --wait",
-    ]
-  }
+  # provisioner "file" {
+  #   source      = "application.sh"
+  #   destination = "/tmp/script.sh"
+  # }
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "chmod +x /tmp/script.sh",
+  #     "/tmp/script.sh args",
+  #     "sudo cloud-init status --wait",
+  #   ]
+  # }
 
-  # user_data = file("application.sh") # execute user-data script which will install dependencies for APP
+  user_data = file("application.sh") # execute user-data script which will install dependencies for APP
 
 }
 
 output "application_public_public_dns" {
     value = aws_instance.petclinic_application.public_dns
 }
-
-# output "application_public_public_dns" {
-#     value = module.petclinic_application.public_dns
-# }
