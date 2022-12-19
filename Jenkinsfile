@@ -40,8 +40,10 @@ tools {
    }
 
   stage ("WAIT TIME TILL DEPLOYMENT") {
-    sh 'sleep 300'
-    echo "Waiting 5 minutes for deployment to complete prior starting smoke testing"
+    steps{
+      sleep time: 300, unit: 'SECONDS'
+      echo "Waiting 5 minutes for deployment to complete prior starting smoke testing"
+    }  
     }
 
   stage ('Check healh status') {
