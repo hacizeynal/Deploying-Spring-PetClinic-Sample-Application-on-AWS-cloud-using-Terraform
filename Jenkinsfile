@@ -40,10 +40,9 @@ tools {
    }
 
   stage ("WAIT TIME TILL DEPLOYMENT") {
-    def time = params.SLEEP_TIME_IN_SECONDS
-    echo "Waiting ${SLEEP_TIME_IN_SECONDS} seconds for deployment to complete prior starting healh check"
-    sleep time.toInteger() // seconds
-}
+    sh 'sleep 300'
+    echo "Waiting 5 minutes for deployment to complete prior starting smoke testing"
+    }
 
   stage ('Check healh status') {
     environment {
