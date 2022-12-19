@@ -38,6 +38,13 @@ tools {
     ''' 
     }
    }
+
+  stage ("WAIT TIME TILL DEPLOYMENT") {
+    def time = params.SLEEP_TIME_IN_SECONDS
+    echo "Waiting ${SLEEP_TIME_IN_SECONDS} seconds for deployment to complete prior starting healh check"
+    sleep time.toInteger() // seconds
+}
+
   stage ('Check healh status') {
     environment {
       PUBLIC_DYNAMIC_URL = "${sh(script:'cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/ && terraform output -raw application_public_public_dns', returnStdout: true).trim()}"
