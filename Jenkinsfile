@@ -1,3 +1,7 @@
+def COLOR_MAP = [
+    'SUCCESS': 'good', 
+    'FAILURE': 'danger',
+]
 pipeline {
 agent any
 tools {
@@ -5,14 +9,14 @@ tools {
 }
 
  stages { 
-  stage ('Checkout Git Repo') { 
+  stage ('CHECKOUT GIT ') { 
      steps { 
        cleanWs()
        sh  'git clone https://github.com/hacizeynal/Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform.git'
       }
       } 
   
-  stage ('Terraform init') { 
+  stage ('TERRAFORM INIT') { 
     steps {
     sh '''
     cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
@@ -21,16 +25,16 @@ tools {
     }
    }
    
-  stage ('Terraform plan') { 
-    steps {
-    sh '''
-    cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
-    terraform plan
-    ''' 
-    }
-    }
+  // stage ('TERRAFORM PLAN') { 
+  //   steps {
+  //   sh '''
+  //   cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
+  //   terraform plan
+  //   ''' 
+  //   }
+  //   }
    
-  stage ('Terraform apply/destroy') { 
+  stage ('TERRAFORM APPLY') { 
     steps {
     sh '''
     cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
@@ -46,7 +50,7 @@ tools {
     }  
     }
 
-  stage ('Check healh status') {
+  stage ('CHECK HEALTH STATUS') {
     environment {
       PUBLIC_DYNAMIC_URL = "${sh(script:'cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/ && terraform output -raw application_public_public_dns', returnStdout: true).trim()}"
     } 
@@ -57,4 +61,14 @@ tools {
         }
       }
     }
+
+  post {
+    always {
+        echo 'Slack Notifications.'
+        slackSend channel: '#jenkins',
+            color: COLOR_MAP[currentBuild.currentResult],
+            message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
+            message: "Application is running on ${env.PUBLIC_DYNAMIC_URL}"
+                }
+            }  
   }
