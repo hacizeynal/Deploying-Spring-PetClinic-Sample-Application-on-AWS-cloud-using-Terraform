@@ -5,12 +5,12 @@ tools {
 }
 
  stages { 
-  // stage ('Checkout Git Repo') { 
-  //    steps { 
-  //      cleanWs()
-  //      sh  'git clone https://github.com/hacizeynal/Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform.git'
-  //     }
-  //     } 
+  stage ('Checkout Git Repo') { 
+     steps { 
+       cleanWs()
+       sh  'git clone https://github.com/hacizeynal/Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform.git'
+      }
+      } 
   
   stage ('Terraform init') { 
     steps {
