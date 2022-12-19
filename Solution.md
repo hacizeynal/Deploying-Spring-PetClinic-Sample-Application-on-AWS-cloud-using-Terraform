@@ -593,9 +593,98 @@ Cloud-init v. 22.4.2-0ubuntu0~22.04.1 finished at Fri, 16 Dec 2022 19:57:47 +000
 
 # Solution for Subtask II
 
-In the second task ,we will build our infrastructure automatically via Jenkins ,Terraform will be used as IAC tool like first task.
+In this task we are implementing first task via Jenkins ,our Jenkinsfile will contain like that
 
+```
+def COLOR_MAP = [
+    'SUCCESS': 'good', 
+    'FAILURE': 'danger',
+]
+pipeline {
+agent any
+tools {
+  terraform 'terraform'
+}
 
+ stages { 
+  stage ('CHECKOUT GIT ') { 
+     steps { 
+       cleanWs()
+       sh  'git clone https://github.com/hacizeynal/Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform.git'
+      }
+      } 
+  
+  stage ('TERRAFORM INIT') { 
+    steps {
+    sh '''
+    cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
+    terraform init
+    ''' 
+    }
+   }
+   
+  stage ('TERRAFORM APPLY') { 
+    steps {
+    sh '''
+    cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
+    terraform apply --auto-approve
+    ''' 
+    }
+   }
+
+  stage ("WAIT TIME TILL DEPLOYMENT") {
+    steps{
+      sleep time: 300, unit: 'SECONDS'
+      echo "Waiting 5 minutes for deployment to complete prior starting health check testing"
+    }  
+    }
+
+  stage ('CHECK HEALTH STATUS') {
+    environment {
+      PUBLIC_DYNAMIC_URL = "${sh(script:'cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/ && terraform output -raw application_public_public_dns', returnStdout: true).trim()}"
+    } 
+    steps {
+      sh "curl -X GET http://${env.PUBLIC_DYNAMIC_URL}:8080/actuator/health/custom"
+
+      echo "Application is UP running successfully ! :) "
+        }
+      }
+    }
+
+  post {
+    always {
+        echo 'Slack Notifications.'
+        slackSend channel: '#jenkins',
+            color: COLOR_MAP[currentBuild.currentResult],
+            message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
+            // message: "Application is running on ${env.PUBLIC_DYNAMIC_URL}"
+                }
+            }  
+  }
+
+```
+
+Since application deployment takes some time I have added 5 minutes wait time before doing health check ,if healh check is successful Slack Notification will be send about Success ,otherwise Failure message will be send to Slack Channel.
+
+```
+SUCCESS: Job Petclinic via Terraform build 53
+More info at: http://ec2-18-208-199-196.compute-1.amazonaws.com:8080/job/Petclinic%20via%20Terraform/53/
+
+```
+Another challenging point is preparing dynamic URL for application ,since it is dynamic we should take URL via terraform output and update Jenkins ENV variable 
+
+```
+
+stage ('CHECK HEALTH STATUS') {
+    environment {
+      PUBLIC_DYNAMIC_URL = "${sh(script:'cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/ && terraform output -raw application_public_public_dns', returnStdout: true).trim()}"
+    } 
+    steps {
+      sh "curl -X GET http://${env.PUBLIC_DYNAMIC_URL}:8080/actuator/health/custom"
+
+      echo "Application is UP running successfully ! :) "
+
+```
 
 
 
