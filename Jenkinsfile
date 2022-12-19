@@ -5,12 +5,12 @@ tools {
 }
 
  stages { 
-  stage ('Checkout Git Repo') { 
-     steps { 
-       cleanWs()
-       sh  'git clone https://github.com/hacizeynal/Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform.git'
-      }
-      } 
+  // stage ('Checkout Git Repo') { 
+  //    steps { 
+  //      cleanWs()
+  //      sh  'git clone https://github.com/hacizeynal/Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform.git'
+  //     }
+  //     } 
   
   stage ('Terraform init') { 
     steps {
@@ -42,7 +42,7 @@ tools {
   stage ("WAIT TIME TILL DEPLOYMENT") {
     steps{
       sleep time: 300, unit: 'SECONDS'
-      echo "Waiting 5 minutes for deployment to complete prior starting smoke testing"
+      echo "Waiting 5 minutes for deployment to complete prior starting health check testing"
     }  
     }
 
