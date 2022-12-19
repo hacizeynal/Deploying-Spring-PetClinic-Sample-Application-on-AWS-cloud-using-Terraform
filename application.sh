@@ -1,5 +1,6 @@
 #!/bin/bash
 hostname APPLICATION
+sudo sed -i 's/#$nrconf{restart} = '"'"'i'"'"';/$nrconf{restart} = '"'"'a'"'"';/g' /etc/needrestart/needrestart.conf
 sudo apt-get update
 sudo apt-get upgrade -y
 sudo apt-get install default-jre -y

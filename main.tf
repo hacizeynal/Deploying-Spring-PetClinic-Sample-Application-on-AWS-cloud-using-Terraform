@@ -141,26 +141,26 @@ resource "aws_instance" "petclinic_mysql" {
     "Name" = "${var.env_prefix}-db"
   }
 
-  connection {
-    type     = "ssh"
-    user     = "ubuntu"
-    host     = self.public_dns
-    private_key = file("~/.ssh/AWS_KEY_PAIR.pem")
-  }
+  # connection {
+  #   type     = "ssh"
+  #   user     = "ubuntu"
+  #   host     = self.public_dns
+  #   private_key = file("~/.ssh/AWS_KEY_PAIR.pem")
+  # }
 
-  provisioner "file" {
-    source      = "mysql.sh"
-    destination = "/tmp/script.sh"
-  }
+  # provisioner "file" {
+  #   source      = "mysql.sh"
+  #   destination = "/tmp/script.sh"
+  # }
 
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /tmp/script.sh",
-      "/tmp/script.sh args",
-      "sudo cloud-init status --wait",
-    ]
-  }
-  # user_data = file("mysql.sh") # execute user-data script which will install dependencies for MySQL DB
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "chmod +x /tmp/script.sh",
+  #     "/tmp/script.sh args",
+  #     "sudo cloud-init status --wait",
+  #   ]
+  # }
+  user_data = file("mysql.sh") # execute user-data script which will install dependencies for MySQL DB
 }
 
 
@@ -179,26 +179,26 @@ resource "aws_instance" "petclinic_application" {
     "Name" = "${var.env_prefix}-app"
   }
 
-  connection {
-    type     = "ssh"
-    user     = "ubuntu"
-    host     = self.public_dns
-    private_key = file("~/.ssh/AWS_KEY_PAIR.pem")
-  }
+  # connection {
+  #   type     = "ssh"
+  #   user     = "ubuntu"
+  #   host     = self.public_dns
+  #   private_key = file("~/.ssh/AWS_KEY_PAIR.pem")
+  # }
 
-  provisioner "file" {
-    source      = "application.sh"
-    destination = "/tmp/script.sh"
-  }
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /tmp/script.sh",
-      "/tmp/script.sh args",
-      "sudo cloud-init status --wait",
-    ]
-  }
+  # provisioner "file" {
+  #   source      = "application.sh"
+  #   destination = "/tmp/script.sh"
+  # }
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "chmod +x /tmp/script.sh",
+  #     "/tmp/script.sh args",
+  #     "sudo cloud-init status --wait",
+  #   ]
+  # }
 
-  # user_data = file("application.sh") # execute user-data script which will install dependencies for APP
+  user_data = file("application.sh") # execute user-data script which will install dependencies for APP
 
 }
 
