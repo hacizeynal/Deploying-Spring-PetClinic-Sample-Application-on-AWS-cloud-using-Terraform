@@ -25,15 +25,6 @@ tools {
     }
    }
    
-  // stage ('TERRAFORM PLAN') { 
-  //   steps {
-  //   sh '''
-  //   cd Deploying-Spring-PetClinic-Sample-Application-on-AWS-cloud-using-Terraform/
-  //   terraform plan
-  //   ''' 
-  //   }
-  //   }
-   
   stage ('TERRAFORM APPLY') { 
     steps {
     sh '''
