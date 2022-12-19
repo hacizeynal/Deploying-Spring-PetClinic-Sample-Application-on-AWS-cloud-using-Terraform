@@ -140,7 +140,27 @@ resource "aws_instance" "petclinic_mysql" {
   tags = {
     "Name" = "${var.env_prefix}-db"
   }
-  user_data = file("mysql.sh") # execute user-data script which will install dependencies for MySQL DB
+
+  connection {
+    type     = "ssh"
+    user     = "ubuntu"
+    host     = self.public_dns
+    private_key = file("~/.ssh/AWS_KEY_PAIR.pem")
+  }
+
+  provisioner "file" {
+    source      = "mysql.sh"
+    destination = "/tmp/script.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/script.sh",
+      "/tmp/script.sh args",
+      "sudo cloud-init status --wait",
+    ]
+  }
+  # user_data = file("mysql.sh") # execute user-data script which will install dependencies for MySQL DB
 }
 
 
@@ -158,7 +178,27 @@ resource "aws_instance" "petclinic_application" {
   tags = {
     "Name" = "${var.env_prefix}-app"
   }
-  user_data = file("application.sh") # execute user-data script which will install dependencies for APP
+
+  connection {
+    type     = "ssh"
+    user     = "ubuntu"
+    host     = self.public_dns
+    private_key = file("~/.ssh/AWS_KEY_PAIR.pem")
+  }
+
+  provisioner "file" {
+    source      = "application.sh"
+    destination = "/tmp/script.sh"
+  }
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/script.sh",
+      "/tmp/script.sh args",
+      "sudo cloud-init status --wait",
+    ]
+  }
+
+  # user_data = file("application.sh") # execute user-data script which will install dependencies for APP
 
 }
 
